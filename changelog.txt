@@ -1,3 +1,9 @@
+v 0.4.2 (20150422)
+- changed the way actions are sent (jsonrpc input.action() instead of http sendkey)
+- added the recently mandatory Content-Type header to the jsonrpc requests
+- changed the soft keyboard behaviour : send the full text field when return is pressed, instead of individual keystrokes (doesn't seem possible with jsonrpc)
+- there is still one call left to the HTTP API (in browseLibrary() ), but everything seems to work anyway
+
 v 0.4.1 (20120111)
 - Sort songs by track if only opened by select an album
 - Removed unused functions.
