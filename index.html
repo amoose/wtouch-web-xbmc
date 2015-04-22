@@ -84,15 +84,21 @@ function sendCommand(cmd,callback)
   httpRequest.send();
 }
 
-function sendSelect(){sendCommand("SendKey(0XF00D)");}
-function sendEscape(){sendCommand("SendKey(0XF01B)");}
-function sendTab(){sendCommand("Action(18)");}
-function sendArrowUp(){sendCommand("SendKey(0XF080)");}//sendInput('Up');}//sendCommand("SendKey(0XF026)");}
-function sendArrowDown(){sendCommand("SendKey(0XF081)");}//sendInput('Down');}//sendCommand("SendKey(0XF028)");}
-function sendArrowRight(){sendCommand("SendKey(0XF083)");}//sendInput('Right');}//sendCommand("SendKey(0XF027)");}
-function sendArrowLeft(){sendCommand("SendKey(0XF082)");}//sendInput('Left');}//sendCommand("SendKey(0XF025)");}
-function sendKeyC(){sendCommand("SendKey(0XF043)");}
-function sendKeyM(){sendCommand('SendKey(0XF04D)');}
+function sendText(text)
+{
+  jsonRequest('Input.SendText', '"text" :"'+text+'", "done":true');
+}
+
+function sendSelect(){sendInput('Select');}
+function sendEscape(){sendInput('Back');}
+function sendTab(){jsonRequest('GUI.SetFullscreen', '"fullscreen" : "toggle"');}
+function sendArrowUp(){sendInput('Up');}
+function sendArrowDown(){sendInput('Down');}
+function sendArrowRight(){sendInput('Right');}
+function sendArrowLeft(){sendInput('Left');}
+
+function sendKeyC(){sendInput('ContextMenu');}
+function sendKeyM(){sendInput('ShowOSD');}
 
 function touchStart(event) 
 {
@@ -401,6 +407,7 @@ function jsonRequest(method,params,callback)
   }
   data+=' "id": 1 }';
   httpRequest.open("POST","/jsonrpc", true);
+  httpRequest.setRequestHeader("Content-Type","application/json");
   httpRequest.send(data);
 }
 
@@ -863,7 +870,7 @@ function initialize()
 <body onorientationchange="updateOrientation();" onload="initialize();" style="margin: 0;background:#000000 no-repeat center center;font-family: Helvetica;">
 <div class="screenheight" style="position:fixed;left:0px;top:0px;width:100%;">
 <div id="toolbar" style="position:absolute;left:0px;top:0px;width:100%;-webkit-transition: all 3000ms linear;background:#6d84a2 url('toolbar.png') repeat-x;z-index:50;min-height:40px;max-height:40px;height:40px;opacity:.9;">
-<input name="Keyboard" value="" onkeyup="if(event.keyCode==8)sendCommand('SendKey(0XF008)');" onkeypress="sendCommand('SendKey('+(61696+event.keyCode)+')');" onfocus="this.value='';this.style.background='white'" onblur="this.value='';this.style.background='url(key.png) no-repeat'" style="width:60px;height:30px;margin:5px;padding:0;font-size:14px;background: url('key.png') no-repeat;border: none;float:left;" autocapitalize="off">
+<input name="Keyboard" value="" onkeyup="if(event.keyCode==13){sendText(this.value); this.value='';}" onfocus="this.value='';this.style.background='white'" onblur="this.value='';this.style.background='url(key.png) no-repeat'" style="width:60px;height:30px;margin:5px;padding:0;font-size:14px;background: url('key.png') no-repeat;border: none;float:left;" autocapitalize="off">
 <input type="button" value="Browse" onclick="openBrowser(true)" style="float:left;margin:5px;min-height:30px;-webkit-appearance:square-button;border: 1px solid;">
 <input type="button" value="Help!" onclick="openHelp(true)" style="float:right;margin:5px;min-height:30px;-webkit-appearance:square-button;border: 1px solid;"><div id="status" style="color:white;"></div>
 </div>
